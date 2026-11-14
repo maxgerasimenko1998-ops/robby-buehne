@@ -7,8 +7,9 @@
      (уличный пульт, самый чистый на тот момент — otklik(), ensureConn(),
      flash(), LS-обёртка с префиксом, хак вибрации через <input type="checkbox" switch>).
      ROBBY НА СЦЕНЕ, ГИБКАЯ ВЕРСИЯ — доклад Dr. Boris Sonnenberg «KI in der Praxis», DGAO Köln, 14.11.2026, 16:45 (Макс 14.11: «всё может пойти не по плану»).
-     34 записи сцены карточками + живой мозг prompts/roboty/robby-buehne (знает план). После записи ✋ — мозг не слышит доклад;
-     🔊 ПРОДОЛЖИТЬ — Robby слышит Бориса и отвечает сам; поле задания по-русски — скажет это по-немецки. Основной — ноутбук robby-dgao/.
+     52 записи сцены карточками + живой мозг prompts/roboty/robby-buehne (знает план). СТАРТУЕТ ГЛУХИМ (startTiho) и после записи ✋ —
+     мозг не слышит доклад; 🔊 ПРОДОЛЖИТЬ — Robby слышит Бориса и отвечает сам; поле задания по-русски — скажет это по-немецки.
+     Основной на сцене — пульт-сценарий robby-dgao/ (только записи, без мозга); этот — запасной. Открывать ОДНУ вкладку.
      Копия пульта ninjaone-bot (= timberjacks-gastgeber = vives-bot, стенд кнопок 40/40). Отличия: мозг, префикс памяти,
      цвет, контекст дня, служебные тексты — и карточка «Точные фразы» ВИДИМА, с зашитыми клипами сценария (ROBOT.clips,
      файлы clips/*.mp3): одна кнопка = реплика слово в слово, сразу, без задержки на мозг.
@@ -330,95 +331,133 @@ const _K = {
   s1_p01_de: { label: "🇩🇪 1 · Winken", data: 'clips/de/s1_p01.mp3', text: "Guten Tag, liebe Kolleginnen und Kollegen! Ich bin Robby, der Neue in der Praxis Sonnenberg." },
   s1_p02_de: { label: "🇩🇪 2 · Zum Publikum drehen", data: 'clips/de/s1_p02.mp3', text: "Erster Arbeitstag, und gleich ein Kongress in Köln. Das nenne ich Einarbeitung." },
   s1_p03_de: { label: "🇩🇪 3", data: 'clips/de/s1_p03.mp3', text: "Keine Sorge, ich beiße nicht. Ich habe ja keine Zähne." },
+  s2_o1_de: { label: "🇩🇪 ↩ начать сам", data: 'clips/de/s2_o1.mp3', text: "Chef, brauchst du nicht gleich die Alignerbox?" },
   s2_p01_de: { label: "🇩🇪 1 · Kopfschütteln", data: 'clips/de/s2_p01.mp3', text: "Die Alignerbox? Die habe ich leider nicht dabei." },
   s2_p02_de: { label: "🇩🇪 2", data: 'clips/de/s2_p02.mp3', text: "Das Team sagt, sie steht neben deiner Kaffeetasse. Wie immer." },
+  s2_x1_de: { label: "🇩🇪 ➕ запас", data: 'clips/de/s2_x1.mp3', text: "Tragen kann ich leider gar nichts. Außer diesem Kasack." },
+  s3_o1_de: { label: "🇩🇪 ↩ начать сам", data: 'clips/de/s3_o1.mp3', text: "Chef, mal eine Frage vom Neuen: Wie lange trägt man diese Aligner eigentlich?" },
   s3_p01_de: { label: "🇩🇪 1", data: 'clips/de/s3_p01.mp3', text: "Zweiundzwanzig Stunden? Ich habe sie… sehr regelmäßig angeschaut." },
   s3_p02_de: { label: "🇩🇪 2 · Zum Publikum drehen", data: 'clips/de/s3_p02.mp3', text: "Das sagen deine Patienten auch immer." },
+  s3_x1_de: { label: "🇩🇪 ➕ запас", data: 'clips/de/s3_x1.mp3', text: "Zweiundzwanzig Stunden am Tag, das schaffe nicht mal ich. Und ich schlafe nie." },
+  s4_o1_de: { label: "🇩🇪 ↩ начать сам", data: 'clips/de/s4_o1.mp3', text: "Chef, und wann untersuchst du eigentlich mich?" },
   s4_p01_de: { label: "🇩🇪 1", data: 'clips/de/s4_p01.mp3', text: "Ich habe keinen Mund." },
   s4_p02_de: { label: "🇩🇪 2 · Nicken", data: 'clips/de/s4_p02.mp3', text: "Gut. Aber bitte mit Ratenzahlung." },
+  s5_o1_de: { label: "🇩🇪 ↩ начать сам", data: 'clips/de/s5_o1.mp3', text: "Chef, willst du wissen, was ich heute schon alles geschafft habe?" },
   s5_p01_de: { label: "🇩🇪 1 · Winken", data: 'clips/de/s5_p01.mp3', text: "Im Wartezimmer habe ich schon alle Patienten begrüßt." },
   s5_p02_de: { label: "🇩🇪 2", data: 'clips/de/s5_p02.mp3', text: "Drei wollten ein Selfie, zwei wollten einen früheren Termin. Und einer hat gefragt, ob ich auch Zahnspangen trage." },
+  s5_x1_de: { label: "🇩🇪 ➕ запас", data: 'clips/de/s5_x1.mp3', text: "Am Empfang wollten sie mir auch gleich einen Termin geben. Ich habe gesagt: Ich arbeite hier." },
   s6_p01_de: { label: "🇩🇪 1", data: 'clips/de/s6_p01.mp3', text: "Ich mache übrigens auch Nachtschicht." },
   s6_p02_de: { label: "🇩🇪 2", data: 'clips/de/s6_p02.mp3', text: "Gestern um dreiundzwanzig Uhr achtundvierzig habe ich alle Sprachnachrichten der Patienten abgehört. Die meisten fragen: Muss ich den Aligner zum Essen wirklich rausnehmen?" },
+  s6_x1_de: { label: "🇩🇪 ➕ запас", data: 'clips/de/s6_x1.mp3', text: "Ich habe allen geantwortet: Das fragen Sie bitte morgen den Chef." },
+  s7_o1_de: { label: "🇩🇪 ↩ начать сам", data: 'clips/de/s7_o1.mp3', text: "Chef, darf ich auch mal etwas Ernstes sagen?" },
   s7_p01_de: { label: "🇩🇪 1 · Zum Publikum drehen", data: 'clips/de/s7_p01.mp3', text: "Ganz ernsthaft: In zehn Jahren werden KI-Assistenten Befunde vorbereiten, Behandlungen planen helfen und den Verlauf überwachen, auch zwischen den Terminen." },
   s7_p02_de: { label: "🇩🇪 2 · Nicken", data: 'clips/de/s7_p02.mp3', text: "Aber Vertrauen, Erfahrung und die Entscheidung bleiben beim Menschen. Bei dir, Boris. Ich bin nur der Assistent." },
+  s8_o1_de: { label: "🇩🇪 ↩ начать сам", data: 'clips/de/s8_o1.mp3', text: "Boss, don't you want to ask me the big question?" },
   s8_p01_de: { label: "🇩🇪 1", data: 'clips/de/s8_p01.mp3', text: "Replace you? Not yet. Boris is still working on it." },
   s8_p02_de: { label: "🇩🇪 2 · Tanz kompakt", data: 'clips/de/s8_p02.mp3', text: "Music, please!" },
   s8_p03_de: { label: "🇩🇪 3 · Abgang", data: 'clips/de/s8_p03.mp3', text: "Danke, Köln! Ich muss zurück in die Praxis." },
+  s8_p03_en: { label: "🇬🇧 3 · Abgang", data: 'clips/en/s8_p03.mp3', text: "Thank you, Cologne! I have to get back to the practice." },
   s9_p01_de: { label: "🇩🇪 1", data: 'clips/de/s9_p01.mp3', text: "Moment, ich lade kurz nach." },
   s9_p02_de: { label: "🇩🇪 2", data: 'clips/de/s9_p02.mp3', text: "Das war nicht abgesprochen, aber ich mache mit." },
   s9_p03_de: { label: "🇩🇪 3 · Zum Publikum drehen", data: 'clips/de/s9_p03.mp3', text: "Applaus für meinen Chef, bitte!" },
-  j01_de: { label: "🇩🇪 F1", data: 'clips/de/j01.mp3', text: "Ja, Chef." },
-  j02_de: { label: "🇩🇪 F2", data: 'clips/de/j02.mp3', text: "Nein, Chef." },
-  j03_de: { label: "🇩🇪 F3", data: 'clips/de/j03.mp3', text: "Gute Frage. Die gebe ich direkt an meinen Chef weiter." },
-  j04_de: { label: "🇩🇪 F4", data: 'clips/de/j04.mp3', text: "Das muss ich erst mit dem Team besprechen." },
-  j05_de: { label: "🇩🇪 F5", data: 'clips/de/j05.mp3', text: "Kannst du das wiederholen? Mein Mikrofon war kurz im Wartezimmer." },
-  j06_de: { label: "🇩🇪 F6", data: 'clips/de/j06.mp3', text: "Das steht nicht in meinem Arbeitsvertrag." },
-  j07_de: { label: "🇩🇪 F7", data: 'clips/de/j07.mp3', text: "Hahaha. Moment… ich lache noch." },
-  j08_de: { label: "🇩🇪 F8", data: 'clips/de/j08.mp3', text: "Applaus, bitte! Ich bin neu hier." },
-  j09_de: { label: "🇩🇪 F9", data: 'clips/de/j09.mp3', text: "Ich bin nur ein Assistent. Die Verantwortung trägt der Kieferorthopäde." },
-  j10_de: { label: "🇩🇪 F10", data: 'clips/de/j10.mp3', text: "Danke schön!" },
-  j11_de: { label: "🇩🇪 F11", data: 'clips/de/j11.mp3', text: "Ich mag Köln. Hier ist sogar am vierzehnten November noch Karneval in der Luft." },
-  j12_de: { label: "🇩🇪 F12", data: 'clips/de/j12.mp3', text: "Ich habe fertig." },
+  j01_de: { label: "🇩🇪 Да, шеф", data: 'clips/de/j01.mp3', text: "Ja, Chef." },
+  j02_de: { label: "🇩🇪 Нет, шеф", data: 'clips/de/j02.mp3', text: "Nein, Chef." },
+  j13_de: { label: "🇩🇪 Ха-ха, согласен!", data: 'clips/de/j13.mp3', text: "[laughs] Ja, Chef, da bin ich ganz bei dir." },
+  j14_de: { label: "🇩🇪 Согласен, шеф", data: 'clips/de/j14.mp3', text: "Sehe ich genauso, Chef." },
+  j07_de: { label: "🇩🇪 Ха-ха-ха, ещё смеюсь", data: 'clips/de/j07.mp3', text: "Hahaha. Moment… ich lache noch." },
+  j10_de: { label: "🇩🇪 Спасибо!", data: 'clips/de/j10.mp3', text: "Danke schön!" },
+  j08_de: { label: "🇩🇪 Аплодисменты, я новенький", data: 'clips/de/j08.mp3', text: "Applaus, bitte! Ich bin neu hier." },
+  j15_de: { label: "🇩🇪 Хороший вопрос, но я хотел спросить…", data: 'clips/de/j15.mp3', text: "Gute Frage, Chef! Aber eigentlich wollte ich dich noch etwas fragen." },
+  j16_de: { label: "🇩🇪 Можно подниму одну тему?", data: 'clips/de/j16.mp3', text: "Chef, darf ich kurz ein Thema ansprechen?" },
+  j17_de: { label: "🇩🇪 Запишу на второй рабочий день", data: 'clips/de/j17.mp3', text: "Spannend! Das schreibe ich mir für meinen zweiten Arbeitstag auf." },
+  j18_de: { label: "🇩🇪 Дальше по программе!", data: 'clips/de/j18.mp3', text: "Gut, Chef. Weiter im Programm!" },
+  j19_de: { label: "🇩🇪 Зал ждёт твой слайд", data: 'clips/de/j19.mp3', text: "Chef, ich glaube, der Saal wartet auf deine nächste Folie." },
+  j03_de: { label: "🇩🇪 Хороший вопрос — передам шефу", data: 'clips/de/j03.mp3', text: "Gute Frage. Die gebe ich direkt an meinen Chef weiter." },
+  j20_de: { label: "🇩🇪 Лучше промолчу, я новенький", data: 'clips/de/j20.mp3', text: "Dazu sage ich lieber nichts. Ich bin erst seit heute hier." },
+  j04_de: { label: "🇩🇪 Сначала обсужу с командой", data: 'clips/de/j04.mp3', text: "Das muss ich erst mit dem Team besprechen." },
+  j05_de: { label: "🇩🇪 Повтори, микрофон отошёл", data: 'clips/de/j05.mp3', text: "Kannst du das wiederholen? Mein Mikrofon war kurz im Wartezimmer." },
+  j06_de: { label: "🇩🇪 Нет в моём договоре", data: 'clips/de/j06.mp3', text: "Das steht nicht in meinem Arbeitsvertrag." },
+  j09_de: { label: "🇩🇪 Я ассистент, решает ортодонт", data: 'clips/de/j09.mp3', text: "Ich bin nur ein Assistent. Die Verantwortung trägt der Kieferorthopäde." },
+  j11_de: { label: "🇩🇪 Люблю Кёльн, карнавал", data: 'clips/de/j11.mp3', text: "Ich mag Köln. Hier ist sogar am vierzehnten November noch Karneval in der Luft." },
+  j12_de: { label: "🇩🇪 Я всё", data: 'clips/de/j12.mp3', text: "Ich habe fertig." },
 };
 const ROBOT = {
   ns: 'robbyb:',                                     // префикс памяти браузера — СВОЙ у каждого пульта (домен GitHub Pages общий)
   agent: 'agent_0001m7cjr48secgr026cn10nvhd6',  // мозг робота (deploy_robot.py --robot robby-buehne)
   title: 'Robby · Bühne (гибкий)',
-  version: '14.11.2026 Robby Bühne · 1',
+  version: '14.11.2026 Robby Bühne · 2',
   dayCtx: "Bühne im großen Saal des Gürzenich Köln, Vortrag deines Chefs Dr. Boris Sonnenberg „KI in der Praxis\" (16:45). Du bist Robby, der Neue in der Praxis Sonnenberg. Boris ist „du\" und „Chef\", das Publikum „Sie\".",
   tishinaPosleZapisi: true,   // стенд: после записи робот слушает ответ гостя; сцена (1B, Robby) — ✋
+  startTiho: true,   // Robby-сцена: после (пере)подключения глухой, пока не «🔊 ПРОДОЛЖИТЬ»
   // 24.10 (Макс): «Заговорить первым» = записанное приветствие, каждый раз СЛЕДУЮЩЕЕ по кругу (AfO — 12 с 27.10) — люди вокруг
   // слышат разные, не заготовку. Сразу, без мозга; мозгу уходит тихая заметка, что прозвучало.
   privetstviya: [],
 
   clips: Object.values(_K),
   cards: [
-    { id: "S0", nav: "S0", num: "Q", q: "За кулисами — проверка звука", qru: "на ноутбуке: Q", items: [
+    { id: "S0", nav: "0", num: "0", q: "За кулисами — проверка звука", qru: "", items: [
       { name: "1", dur: 4, first: "Test, Test. Hier spricht Robby. Alles klar bei der Technik?", de: _K.s0_p01_de } ] },
-    { id: "S1", nav: "S1", num: "W", q: "Выход — Борис объявляет нового сотрудника", qru: "Robby выходит, машет", items: [
+    { id: "S1", nav: "1", num: "1", q: "Выход — Борис объявляет нового сотрудника", qru: "Robby выходит, машет", items: [
       { name: "1 · Winken", dur: 5, first: "Guten Tag, liebe Kolleginnen und Kollegen! Ich bin Robby, der Neue in der …", de: _K.s1_p01_de },
       { name: "2 · Zum Publikum drehen", dur: 5, first: "Erster Arbeitstag, und gleich ein Kongress in Köln. Das nenne ich Einarbeitung.", de: _K.s1_p02_de },
       { name: "3", dur: 4, first: "Keine Sorge, ich beiße nicht. Ich habe ja keine Zähne.", de: _K.s1_p03_de } ] },
-    { id: "S2", nav: "S2", num: "E", q: "Борис просит коробку с элайнерами", qru: "робот её не несёт", items: [
+    { id: "S2", nav: "2", num: "2", q: "Борис просит коробку с элайнерами", qru: "↩ — Робби начинает сам, если Борис забыл", items: [
+      { name: "↩ начать сам", dur: 2, first: "Chef, brauchst du nicht gleich die Alignerbox?", de: _K.s2_o1_de },
       { name: "1 · Kopfschütteln", dur: 3, first: "Die Alignerbox? Die habe ich leider nicht dabei.", de: _K.s2_p01_de },
-      { name: "2", dur: 3, first: "Das Team sagt, sie steht neben deiner Kaffeetasse. Wie immer.", de: _K.s2_p02_de } ] },
-    { id: "S3", nav: "S3", num: "R", q: "Борис: носил элайнеры 22 часа?", qru: "2-я — после «Das war keine Antwort»", items: [
+      { name: "2", dur: 3, first: "Das Team sagt, sie steht neben deiner Kaffeetasse. Wie immer.", de: _K.s2_p02_de },
+      { name: "➕ запас", dur: 3, first: "Tragen kann ich leider gar nichts. Außer diesem Kasack.", de: _K.s2_x1_de } ] },
+    { id: "S3", nav: "3", num: "3", q: "Борис: носил элайнеры 22 часа?", qru: "2-я — после «Das war keine Antwort»; ↩ — начать сам", items: [
+      { name: "↩ начать сам", dur: 5, first: "Chef, mal eine Frage vom Neuen: Wie lange trägt man diese Aligner eigentlich?", de: _K.s3_o1_de },
       { name: "1", dur: 6, first: "Zweiundzwanzig Stunden? Ich habe sie… sehr regelmäßig angeschaut.", de: _K.s3_p01_de },
-      { name: "2 · Zum Publikum drehen", dur: 2, first: "Das sagen deine Patienten auch immer.", de: _K.s3_p02_de } ] },
-    { id: "S4", nav: "S4", num: "T", q: "Борис: «Mach mal den Mund auf»", qru: "2-я — после «Das kriegen wir mit Alignern hin»", items: [
+      { name: "2 · Zum Publikum drehen", dur: 2, first: "Das sagen deine Patienten auch immer.", de: _K.s3_p02_de },
+      { name: "➕ запас", dur: 5, first: "Zweiundzwanzig Stunden am Tag, das schaffe nicht mal ich. Und ich schlafe nie.", de: _K.s3_x1_de } ] },
+    { id: "S4", nav: "4", num: "4", q: "Борис: «Mach mal den Mund auf»", qru: "2-я — после «Das kriegen wir mit Alignern hin»; ↩ — начать сам", items: [
+      { name: "↩ начать сам", dur: 3, first: "Chef, und wann untersuchst du eigentlich mich?", de: _K.s4_o1_de },
       { name: "1", dur: 1, first: "Ich habe keinen Mund.", de: _K.s4_p01_de },
       { name: "2 · Nicken", dur: 2, first: "Gut. Aber bitte mit Ratenzahlung.", de: _K.s4_p02_de } ] },
-    { id: "S5", nav: "S5", num: "Y", q: "Приёмная — первые пациенты", qru: "", items: [
+    { id: "S5", nav: "5", num: "5", q: "Приёмная — первые пациенты", qru: "↩ — начать сам", items: [
+      { name: "↩ начать сам", dur: 3, first: "Chef, willst du wissen, was ich heute schon alles geschafft habe?", de: _K.s5_o1_de },
       { name: "1 · Winken", dur: 3, first: "Im Wartezimmer habe ich schon alle Patienten begrüßt.", de: _K.s5_p01_de },
-      { name: "2", dur: 7, first: "Drei wollten ein Selfie, zwei wollten einen früheren Termin. Und einer hat …", de: _K.s5_p02_de } ] },
-    { id: "S6", nav: "S6", num: "U", q: "Ночная смена — голосовые 23:48", qru: "", items: [
+      { name: "2", dur: 7, first: "Drei wollten ein Selfie, zwei wollten einen früheren Termin. Und einer hat …", de: _K.s5_p02_de },
+      { name: "➕ запас", dur: 5, first: "Am Empfang wollten sie mir auch gleich einen Termin geben. Ich habe gesagt: …", de: _K.s5_x1_de } ] },
+    { id: "S6", nav: "6", num: "6", q: "Ночная смена — голосовые 23:48", qru: "Робби начинает сам", items: [
       { name: "1", dur: 2, first: "Ich mache übrigens auch Nachtschicht.", de: _K.s6_p01_de },
-      { name: "2", dur: 9, first: "Gestern um dreiundzwanzig Uhr achtundvierzig habe ich alle Sprachnachrichten …", de: _K.s6_p02_de } ] },
-    { id: "S7", nav: "S7", num: "I", q: "Серьёзно: ортодонтия через 10 лет", qru: "обязательный блок, переход к докладу", items: [
+      { name: "2", dur: 9, first: "Gestern um dreiundzwanzig Uhr achtundvierzig habe ich alle Sprachnachrichten …", de: _K.s6_p02_de },
+      { name: "➕ запас", dur: 4, first: "Ich habe allen geantwortet: Das fragen Sie bitte morgen den Chef.", de: _K.s6_x1_de } ] },
+    { id: "S7", nav: "7", num: "7", q: "Серьёзно: ортодонтия через 10 лет", qru: "обязательный блок, переход к докладу; ↩ — начать сам", items: [
+      { name: "↩ начать сам", dur: 2, first: "Chef, darf ich auch mal etwas Ernstes sagen?", de: _K.s7_o1_de },
       { name: "1 · Zum Publikum drehen", dur: 10, first: "Ganz ernsthaft: In zehn Jahren werden KI-Assistenten Befunde vorbereiten, …", de: _K.s7_p01_de },
       { name: "2 · Nicken", dur: 7, first: "Aber Vertrauen, Erfahrung und die Entscheidung bleiben beim Menschen. Bei …", de: _K.s7_p02_de } ] },
-    { id: "S8", nav: "S8", num: "O", q: "Финал по-английски + танец", qru: "«Music, please!» → звукачу Human Nature → уход", items: [
+    { id: "S8", nav: "8", num: "8", q: "Финал по-английски + танец", qru: "«Music, please!» → звукачу Human Nature → уход", items: [
+      { name: "↩ начать сам", dur: 3, first: "Boss, don't you want to ask me the big question?", de: _K.s8_o1_de },
       { name: "1", dur: 3, first: "Replace you? Not yet. Boris is still working on it.", de: _K.s8_p01_de },
       { name: "2 · Tanz kompakt", dur: 1, first: "Music, please!", de: _K.s8_p02_de },
-      { name: "3 · Abgang", dur: 3, first: "Danke, Köln! Ich muss zurück in die Praxis.", de: _K.s8_p03_de } ] },
-    { id: "S9", nav: "S9", num: "P", q: "Аварийные", qru: "пауза, импровизация, аплодисменты шефу", items: [
+      { name: "3 · Abgang", dur: 3, first: "Danke, Köln! Ich muss zurück in die Praxis.", de: _K.s8_p03_de, en: _K.s8_p03_en } ] },
+    { id: "S9", nav: "9", num: "9", q: "Аварийные", qru: "пауза, импровизация, аплодисменты шефу", items: [
       { name: "1", dur: 2, first: "Moment, ich lade kurz nach.", de: _K.s9_p01_de },
       { name: "2", dur: 2, first: "Das war nicht abgesprochen, aber ich mache mit.", de: _K.s9_p02_de },
       { name: "3 · Zum Publikum drehen", dur: 2, first: "Applaus für meinen Chef, bitte!", de: _K.s9_p03_de } ] },
-    { id: "J", nav: "F", num: "F", q: "Джокеры", qru: "если Борис сказал не по тексту", items: [
-      { name: "F1", dur: 1, first: "Ja, Chef.", de: _K.j01_de },
-      { name: "F2", dur: 1, first: "Nein, Chef.", de: _K.j02_de },
-      { name: "F3", dur: 3, first: "Gute Frage. Die gebe ich direkt an meinen Chef weiter.", de: _K.j03_de },
-      { name: "F4", dur: 2, first: "Das muss ich erst mit dem Team besprechen.", de: _K.j04_de },
-      { name: "F5", dur: 4, first: "Kannst du das wiederholen? Mein Mikrofon war kurz im Wartezimmer.", de: _K.j05_de },
-      { name: "F6", dur: 2, first: "Das steht nicht in meinem Arbeitsvertrag.", de: _K.j06_de },
-      { name: "F7", dur: 3, first: "Hahaha. Moment… ich lache noch.", de: _K.j07_de },
-      { name: "F8", dur: 2, first: "Applaus, bitte! Ich bin neu hier.", de: _K.j08_de },
-      { name: "F9", dur: 4, first: "Ich bin nur ein Assistent. Die Verantwortung trägt der Kieferorthopäde.", de: _K.j09_de },
-      { name: "F10", dur: 1, first: "Danke schön!", de: _K.j10_de },
-      { name: "F11", dur: 5, first: "Ich mag Köln. Hier ist sogar am vierzehnten November noch Karneval in der Luft.", de: _K.j11_de },
-      { name: "F12", dur: 1, first: "Ich habe fertig.", de: _K.j12_de } ] },
+    { id: "J", nav: "🃏", num: "🃏", q: "Джокеры", qru: "согласие, вернуть Бориса к плану, выкрутиться", items: [
+      { name: "Да, шеф", dur: 1, first: "Ja, Chef.", de: _K.j01_de },
+      { name: "Нет, шеф", dur: 1, first: "Nein, Chef.", de: _K.j02_de },
+      { name: "Ха-ха, согласен!", dur: 3, first: "[laughs] Ja, Chef, da bin ich ganz bei dir.", de: _K.j13_de },
+      { name: "Согласен, шеф", dur: 1, first: "Sehe ich genauso, Chef.", de: _K.j14_de },
+      { name: "Ха-ха-ха, ещё смеюсь", dur: 3, first: "Hahaha. Moment… ich lache noch.", de: _K.j07_de },
+      { name: "Спасибо!", dur: 1, first: "Danke schön!", de: _K.j10_de },
+      { name: "Аплодисменты, я новенький", dur: 2, first: "Applaus, bitte! Ich bin neu hier.", de: _K.j08_de },
+      { name: "Хороший вопрос, но я хотел спросить…", dur: 4, first: "Gute Frage, Chef! Aber eigentlich wollte ich dich noch etwas fragen.", de: _K.j15_de },
+      { name: "Можно подниму одну тему?", dur: 2, first: "Chef, darf ich kurz ein Thema ansprechen?", de: _K.j16_de },
+      { name: "Запишу на второй рабочий день", dur: 3, first: "Spannend! Das schreibe ich mir für meinen zweiten Arbeitstag auf.", de: _K.j17_de },
+      { name: "Дальше по программе!", dur: 2, first: "Gut, Chef. Weiter im Programm!", de: _K.j18_de },
+      { name: "Зал ждёт твой слайд", dur: 3, first: "Chef, ich glaube, der Saal wartet auf deine nächste Folie.", de: _K.j19_de },
+      { name: "Хороший вопрос — передам шефу", dur: 3, first: "Gute Frage. Die gebe ich direkt an meinen Chef weiter.", de: _K.j03_de },
+      { name: "Лучше промолчу, я новенький", dur: 3, first: "Dazu sage ich lieber nichts. Ich bin erst seit heute hier.", de: _K.j20_de },
+      { name: "Сначала обсужу с командой", dur: 2, first: "Das muss ich erst mit dem Team besprechen.", de: _K.j04_de },
+      { name: "Повтори, микрофон отошёл", dur: 4, first: "Kannst du das wiederholen? Mein Mikrofon war kurz im Wartezimmer.", de: _K.j05_de },
+      { name: "Нет в моём договоре", dur: 2, first: "Das steht nicht in meinem Arbeitsvertrag.", de: _K.j06_de },
+      { name: "Я ассистент, решает ортодонт", dur: 4, first: "Ich bin nur ein Assistent. Die Verantwortung trägt der Kieferorthopäde.", de: _K.j09_de },
+      { name: "Люблю Кёльн, карнавал", dur: 5, first: "Ich mag Köln. Hier ist sogar am vierzehnten November noch Karneval in der Luft.", de: _K.j11_de },
+      { name: "Я всё", dur: 1, first: "Ich habe fertig.", de: _K.j12_de } ] },
   ],
 
   // Копия пульта 1b-robot (= huk-roboter = ninjaone-bot = vives-bot, решение Макса: пульт — копия лучшего готового).
@@ -690,7 +729,7 @@ function releaseBoard(msg){
   if(msg) log(msg);
 }
 // 1B (аудит 19.10): записи сцены — в память телефона сразу при открытии пульта. Сцене не нужен мозг — пусть не нужна и сеть.
-const KLIP_V='1411b';   // переозвучил запись — поменяй метку (урок эфира 21.08)
+const KLIP_V='1411c';   // переозвучил запись — поменяй метку (урок эфира 21.08)
 function klipyVPamyat(){
   const vse=(ROBOT.clips||[]).filter(c=>c.data); let gotovo=0, oshibok=0;
   const pokaz=()=>{ const l=$('board')?.previousElementSibling;
@@ -1278,6 +1317,7 @@ async function doConnect(isReconnect){
     conv = await Promise.race([ starting, new Promise((_,rej)=>setTimeout(()=>{
       late=true; rej(new Error('сервер не ответил за 15 секунд'));
     }, 15000)) ]);
+    if(window._startTiho){ window._startTiho=false; if(!quiet){ quiet=true; quietUI(); try{ window._hvatitUI?.(); }catch{} } log('✋ Сцена: подключился и НЕ слушает — «🔊 ПРОДОЛЖИТЬ», чтобы слушал'); }
     setWanted(micMode()==='open' && !quiet); try{refreshDirButtons();}catch{}
     refreshMicList();   // названия микрофонов видны только после разрешения
     if(connMode()==='webrtc'){
@@ -1402,6 +1442,7 @@ $('connectBtn').onclick=async()=>{
   hiddenLog=[]; userStopping=false;
   $('connectBtn').disabled=true; $('connectBtn').textContent='Подключаюсь…';
   showLive();
+  window._startTiho = !!ROBOT.startTiho;
   await doConnect(false);
   $('connectBtn').disabled=false; $('connectBtn').textContent='▶️ Подключиться';
 };
